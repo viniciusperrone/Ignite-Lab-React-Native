@@ -5,12 +5,8 @@ import { Envelope, Key } from "phosphor-react-native";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+import { IUserLogin } from "@shared/interfaces";
 import Logo from "assets/logo_primary.svg";
-
-interface IUserLogin {
-  email: string;
-  password: string;
-}
 
 function SignIn() {
   const [user, setUser] = useState<IUserLogin>();

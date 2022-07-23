@@ -1,4 +1,4 @@
-package com.mobile;
+package com.viniciusperrone.mobile;
 
 import android.os.Build;
 import android.os.Bundle;

@@ -5,7 +5,18 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "plugins": [
+      "@react-native-firebase/app"
+    ],
+    "android": {
+      "package": "com.viniciusperrone.mobile",
+      "googleServicesFile": "./google-services.json"
+    },
+    "ios": {
+      "bundleIdentifier": "com.viniciusperrone.mobile",
+      "googleServicesFile": "./GoogleService-Info.plist"
+    }
   },
   "name": "mobile"
 }

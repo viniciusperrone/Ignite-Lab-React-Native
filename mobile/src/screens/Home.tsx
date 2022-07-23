@@ -9,6 +9,8 @@ import {
   Center,
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
+import { Alert } from "react-native";
 import { SignOut, ChatTeardropText } from "phosphor-react-native";
 
 import { Button } from "@components/Button";
@@ -53,6 +55,15 @@ export function Home() {
     navigate("details", { orderId });
   }
 
+  function handleLogout() {
+    auth()
+      .signOut()
+      .catch((error) => {
+        console.log(error);
+        return Alert.alert("Sair", "Error. tente novamente");
+      });
+  }
+
   return (
     <VStack>
       <HStack
@@ -66,7 +77,10 @@ export function Home() {
       >
         <Logo />
 
-        <IconButton icon={<SignOut size={26} color={colors.gray[300]} />} />
+        <IconButton
+          icon={<SignOut size={26} color={colors.gray[300]} />}
+          onPress={handleLogout}
+        />
       </HStack>
 
       <VStack>

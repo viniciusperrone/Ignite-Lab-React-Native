@@ -75,7 +75,7 @@ export function Home() {
       });
 
     return subscriber;
-  }, []);
+  }, [statusSelected]);
 
   return (
     <VStack>
@@ -121,25 +121,29 @@ export function Home() {
           />
         </HStack>
 
-        {isLoading ? <Loading /> : <FlatList
-          data={orders}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Order data={item} onPress={() => handleOpenDetails(item.id)} />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 100 }}
-          ListEmptyComponent={() => (
-            <Center>
-              <ChatTeardropText color={colors.gray[300]} size={40} />
-              <Text color="gray.300" fontSize="xl" mt={6} textAlign="center">
-                Você ainda não possui{"\n"}
-                solicitações{" "}
-                {statusSelected === "open" ? "em andamento" : "finalizadas"}
-              </Text>
-            </Center>
-          )}
-        />}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={orders}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Order data={item} onPress={() => handleOpenDetails(item.id)} />
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 100 }}
+            ListEmptyComponent={() => (
+              <Center>
+                <ChatTeardropText color={colors.gray[300]} size={40} />
+                <Text color="gray.300" fontSize="xl" mt={6} textAlign="center">
+                  Você ainda não possui{"\n"}
+                  solicitações{" "}
+                  {statusSelected === "open" ? "em andamento" : "finalizadas"}
+                </Text>
+              </Center>
+            )}
+          />
+        )}
 
         <Button title="Nova solicitação" onPress={handleNewOrder} />
       </VStack>

@@ -9,3 +9,8 @@ export interface IOrder {
   when: string;
   status: "open" | "closed";
 }
+
+export interface IRequest {
+  patrimony: string;
+  description: string
+}

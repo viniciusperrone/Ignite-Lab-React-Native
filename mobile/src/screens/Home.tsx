@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   HStack,
   IconButton,
@@ -10,40 +10,25 @@ import {
 } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { Alert } from "react-native";
 import { SignOut, ChatTeardropText } from "phosphor-react-native";
 
 import { Button } from "@components/Button";
 import { Filter } from "@components/Filter";
 import { Order } from "@components/Order";
+import { Loading } from "@components/Loading";
 
-import { IOrder } from "@shared/interfaces";
+import { dateFormat } from "src/utils/firestoreDateFormat";
+import { IOrder, IOrderResponse } from "@shared/interfaces";
 import Logo from "assets/logo_secondary.svg";
 
 export function Home() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusSelected, setStatusSelected] = useState<"open" | "closed">(
     "open"
   );
-  const [orders, setOrders] = useState<IOrder[]>([
-    {
-      id: "123",
-      patrimony: "123456",
-      when: "18/07/2022 às 10:00",
-      status: "open",
-    },
-    {
-      id: "123",
-      patrimony: "123456",
-      when: "18/07/2022 às 10:00",
-      status: "open",
-    },
-    {
-      id: "123",
-      patrimony: "123456",
-      when: "18/07/2022 às 10:00",
-      status: "open",
-    },
-  ]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const { colors } = useTheme();
   const { navigate } = useNavigation();
 
@@ -63,6 +48,34 @@ export function Home() {
         return Alert.alert("Sair", "Error. tente novamente");
       });
   }
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    const subscriber = firestore()
+      .collection("orders")
+      .where("status", "==", statusSelected)
+      .onSnapshot((snapshot) => {
+        const data = snapshot.docs.map((doc) => {
+          const { id, patrimony, description, status, created_at } =
+            doc.data() as IOrderResponse;
+
+          return {
+            id,
+            patrimony,
+            description,
+            status,
+            created_at,
+            when: dateFormat(created_at),
+          };
+        });
+
+        setOrders(data);
+        setIsLoading(false);
+      });
+
+    return subscriber;
+  }, []);
 
   return (
     <VStack>
@@ -108,7 +121,7 @@ export function Home() {
           />
         </HStack>
 
-        <FlatList
+        {isLoading ? <Loading /> : <FlatList
           data={orders}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
@@ -126,7 +139,7 @@ export function Home() {
               </Text>
             </Center>
           )}
-        />
+        />}
 
         <Button title="Nova solicitação" onPress={handleNewOrder} />
       </VStack>

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Alert } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import { VStack } from "native-base";
 import { useNavigation } from "@react-navigation/native";
+import firestore from "@react-native-firebase/firestore";
 
 import { Button } from "@components/Button";
 import { Header } from "@components/Header";
 import { Input } from "@components/Input";
-import { VStack } from "native-base";
 import { IRequest } from "@shared/interfaces";
 
 export function Register() {

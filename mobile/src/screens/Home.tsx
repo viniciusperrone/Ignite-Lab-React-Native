@@ -24,11 +24,12 @@ import { IOrder, IOrderResponse } from "@shared/interfaces";
 import Logo from "assets/logo_secondary.svg";
 
 export function Home() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [statusSelected, setStatusSelected] = useState<"open" | "closed">(
     "open"
-  );
-  const [orders, setOrders] = useState<IOrder[]>([]);
+    );
+    const [orders, setOrders] = useState<IOrder[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    
   const { colors } = useTheme();
   const { navigate } = useNavigation();
 
